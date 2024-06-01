@@ -23,7 +23,9 @@ app.use("/api/settings", settingsRoutes);
 app.get("/api", (req, res) => {
   res.send("Welcome to Docs Server");
 });
-
+app.all('*', (req, res) => {
+  res.status(404).send('Page not found');
+});
 
 mongoose
   .connect(process.env.MONGO_URL)
