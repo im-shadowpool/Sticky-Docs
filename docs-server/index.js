@@ -17,10 +17,10 @@ app.use(express.urlencoded({ extended: true }));
 // app.use(cors({ credentials: true, origin: ["http://localhost:5173", "https://docs.devshadow.live"]}));
 
 // Routes
-app.use("/user", userRoutes);
-app.use("/notes", notesRoutes);
-app.use("/settings", settingsRoutes);
-app.get("/", (req, res) => {
+app.use("/api/user", userRoutes);
+app.use("/api/notes", notesRoutes);
+app.use("/api/settings", settingsRoutes);
+app.get("/api", (req, res) => {
   res.send("Welcome to Docs Server");
 });
 
