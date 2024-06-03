@@ -27,6 +27,7 @@ const Background = () => {
   const navigate = useNavigate();
   const { currentUser } = useContext(UserContext);
 
+  //Auth
   const token = currentUser?.token;
   useEffect(() => {
     if (!token) {
@@ -37,7 +38,7 @@ const Background = () => {
   const getGreeting = () => {
     const currentTime = new Date();
     const currentHour = currentTime.getHours();
-
+    console.log(currentHour);
     let greeting;
 
     if (currentHour < 12) {
@@ -63,10 +64,11 @@ const Background = () => {
     <>
       <div className="fixed z-[2] w-full h-screen">
         <div className="absolute text-zinc-500 top-[5%] w-full py-10 flex justify-center text-large font-semibold">
-          {message}
+          {currentUser?.defaultSettings.disableGreetings && "Document"}
+          {!currentUser?.defaultSettings.disableGreetings && message}
         </div>
         <div className="absolute top-1/2 left-1/2 -translate-x-[50%] -translate-y-[50%] text-[13vw] leading-none tracking-tighter font-semibold text-emerald-200">
-          Docs.
+          {currentUser?.defaultSettings.mainTitle}
         </div>
       </div>
       <NotesLoader />

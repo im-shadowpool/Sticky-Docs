@@ -37,6 +37,7 @@ exports.createUser = async (req, res) => {
       username: newUsername,
       email: newEmail,
       password: hashedPassword,
+      settings: {},
     });
 
     res.status(201).json(`${newUser.email}, "User created successfully"`);
@@ -72,13 +73,15 @@ exports.loginUser = async (req, res) => {
       return res.status(400).send({ message: "Invalid credentials" });
     }
 
-    const { _id, username, email } = user;
+    const { _id, username, email, settings } = user;
+
+    const defaultSettings = settings;
 
     const token = jwt.sign({ _id, username }, process.env.JWT_SECRET, {
       expiresIn: "7d",
     });
 
-    res.status(200).json({ _id, username, email, token });
+    res.status(200).json({ _id, username, email, token, defaultSettings });
   } catch (error) {
     res.status(500).send({ message: "Error while logging in user", error });
   }

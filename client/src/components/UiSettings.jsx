@@ -1,7 +1,8 @@
 import { useNavigate } from "react-router-dom";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../context/userContext";
 import { motion, AnimatePresence } from "framer-motion";
+import axios from "axios";
 
 const UiSettings = () => {
   let navigate = useNavigate();
@@ -16,19 +17,55 @@ const UiSettings = () => {
   }, []);
   // Auth done
 
+  const [mainTitle, setMainTitle] = useState(
+    currentUser.defaultSettings.mainTitle
+  );
+  const [sortOption, setSortOption] = useState(
+    currentUser.defaultSettings.sortOption
+  );
+  const [disableGreetings, setdisableGreetings] = useState(
+    currentUser.defaultSettings.disableGreetings
+  );
+
   const onClickOutsidePopup = (e) => {
     if (e.target.classList.contains("clickedOutside")) {
       navigate("/");
     }
   };
 
-  const formSubmit = (e) => {
+  const formSubmit = async (e) => {
     e.preventDefault();
     console.log({
-      mainTitle: e.target[0].value,
-      sortOption: e.target[1].value,
-      showGreetings: e.target[2].checked,
+      sortOption,
+      mainTitle,
+      disableGreetings,
     });
+    const response = await axios.post(
+      `${import.meta.env.VITE_BACKEND_URL}/settings/`,
+      {
+        sortOption,
+        mainTitle,
+        disableGreetings,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${currentUser.token}`,
+        },
+      }
+    );
+    console.log(response.data);
+    if (response.status === 200) {
+      //Save Data to the local storage to USER.defaultSettings
+      const user = JSON.parse(localStorage.getItem("user"));
+      user.defaultSettings = {
+        sortOption,
+        mainTitle,
+        disableGreetings,
+      };
+      localStorage.setItem("user", JSON.stringify(user));
+      navigate("/");
+      window.location.reload();
+    }
   };
 
   return (
@@ -66,7 +103,10 @@ const UiSettings = () => {
                     className="w-full p-2 rounded-lg bg-white text-black"
                     placeholder="Enter main title"
                     maxLength={8}
-                    defaultValue={"Docs."}
+                    value={mainTitle}
+                    onChange={(e) => {
+                      setMainTitle(e.target.value);
+                    }}
                   />
 
                   {/* Sort Option */}
@@ -77,18 +117,32 @@ const UiSettings = () => {
                     name="sortOption"
                     id="sortOption"
                     className="w-full p-2 rounded-lg text-black bg-white"
+                    value={sortOption}
+                    onChange={(e) => {
+                      setSortOption(e.target.value);
+                    }}
                   >
                     <option value="newest">Newest</option>
                     <option value="oldest">Oldest</option>
                   </select>
-                  {/* Show Greetings */}
+                  {/* disable Greetings */}
                   <div className="flex items-center mt-4">
-                    <input type="checkbox" className="w-10 h-6" />
-                    <span className="text-lg">Show greetings</span>
+                    <input
+                      type="checkbox"
+                      className="w-10 h-6"
+                      checked={disableGreetings}
+                      onChange={(e) => {
+                        setdisableGreetings(e.target.checked);
+                      }}
+                    />
+                    <span className="text-lg">Disable greetings</span>
                   </div>
                 </div>
                 <div className="flex justify-center">
-                  <button className="mt-4 bg-white text-emerald-500 px-4 py-2 rounded-lg hover:bg-emerald-500 hover:text-white">
+                  <button
+                    type="submit"
+                    className="mt-4 bg-white text-emerald-500 px-4 py-2 rounded-lg hover:bg-emerald-500 hover:text-white"
+                  >
                     Save
                   </button>
                 </div>

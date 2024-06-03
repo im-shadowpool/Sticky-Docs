@@ -10,17 +10,17 @@ const NotesLoader = () => {
   const ref = useRef(null);
   const navigate = useNavigate();
 
-  const [data, setData] = useState([]);
-
   // Authenticating the user
   const { currentUser } = useContext(UserContext);
   const token = currentUser?.token;
-
   useEffect(() => {
     if (!token || !currentUser) {
       navigate("/login");
     }
   }, []);
+
+  const [data, setData] = useState([]);
+  // const [sortData, setSortData] = useState([data]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,6 +47,14 @@ const NotesLoader = () => {
 
   console.log("NotesLoader 2");
 
+  const reverseData = [...data].reverse();
+
+  console.log(data);
+  // console.log(sortData);
+
+  const finalData =
+    currentUser.defaultSettings.sortOption === "newest" ? reverseData : data;
+
   const container = {
     hidden: { opacity: 1, scale: 0 },
     visible: {
@@ -69,7 +77,7 @@ const NotesLoader = () => {
       initial="hidden"
       animate="visible"
     >
-      {data?.map((item) => (
+      {finalData?.map((item) => (
         <Card card={item} key={item._id} refe={ref} />
       ))}
     </motion.div>

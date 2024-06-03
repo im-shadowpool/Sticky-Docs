@@ -37,7 +37,21 @@ const userSchema = new mongoose.Schema(
       },
     ],
     settings: {
-      type: Object,
+      mainTitle: {
+        type: String,
+        required: true,
+        default: "Docs.",
+      },
+      sortOption: {
+        type: String,
+        required: true,
+        default: "oldest",
+      },
+      disableGreetings: {
+        type: Boolean,
+        required: true,
+        default: false,
+      },
     },
   },
   { timestamps: true }
