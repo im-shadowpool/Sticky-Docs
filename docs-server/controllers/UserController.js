@@ -6,7 +6,6 @@ const jwt = require("jsonwebtoken");
 exports.createUser = async (req, res) => {
   try {
     const { username, email, password, confirmPassword } = req.body;
-    console.log(req.body);
 
     if (!username || !email || !password || !confirmPassword) {
       return res.status(400).send({ message: "All fields are required" });
@@ -15,9 +14,15 @@ exports.createUser = async (req, res) => {
     const newEmail = email.toLowerCase();
     const newUsername = username.toLowerCase();
     const emailExist = await User.findOne({ email: newEmail });
+    const usernameExist = await User.findOne({
+      username: newUsername,
+    });
 
     if (emailExist) {
       return res.status(400).send({ message: "Email already exists" });
+    }
+    if (usernameExist) {
+      return res.status(400).send({ message: "Username already exists" });
     }
 
     if (password.trim().length < 6) {
@@ -39,6 +44,7 @@ exports.createUser = async (req, res) => {
       password: hashedPassword,
       settings: {},
     });
+    console.log(req.body);
 
     res.status(201).json(`${newUser.email}, "User created successfully"`);
   } catch (error) {
@@ -102,6 +108,16 @@ exports.manageUser = async (req, res) => {
 
     if (!user) {
       return res.status(404).send({ message: "User not found" });
+    }
+
+    if (newPassword.trim().length < 6) {
+      return res
+        .status(400)
+        .send({ message: "Password must be at least 6 characters long" });
+    }
+
+    if (newPassword !== confirmPassword) {
+      return res.status(400).send({ message: "Passwords do not match" });
     }
 
     const vaildPassword = await bcrypt.compare(currentPassword, user.password);

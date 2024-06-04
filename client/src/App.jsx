@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import {
   BrowserRouter,
   Navigate,
@@ -16,7 +15,6 @@ import NotFoundPage from "./pages/404";
 import UserProvider from "./context/userContext";
 import Logout from "./pages/Logout";
 import Background from "./components/Background";
-import NotesLoader from "./components/NotesLoader";
 
 const MainApp = () => {
   const location = useLocation();
@@ -26,7 +24,7 @@ const MainApp = () => {
         {location.pathname !== "/login" &&
           location.pathname !== "/signup" &&
           location.pathname !== "*" && <Background />}
-        {/* {window.location.pathname === "/create-note" && <Background />} */}
+
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/create-note" element={<CreateNote />} />

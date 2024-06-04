@@ -1,9 +1,12 @@
 import axios from "axios";
 import { useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const navigate = useNavigate();
+
+  const [errorMsg, setErrorMsg] = useState(null);
 
   const [userData, setUserData] = useState({
     username: "",
@@ -31,6 +34,20 @@ const Signup = () => {
       navigate("/login");
     } catch (error) {
       console.log(error);
+      console.log(error.response.data.message);
+      console.log(error.response.status);
+
+      setErrorMsg(error.response.data.message);
+
+      toast.error(errorMsg, {
+        style: {
+          borderRadius: "10px",
+          background: "#363636",
+          color: "#fff",
+        },
+      });
+
+      console.log(errorMsg);
     }
   };
 
@@ -58,6 +75,7 @@ const Signup = () => {
               type="text"
               id="username"
               name="username"
+              required
               value={userData.username}
               onChange={changeInputHandler}
               placeholder="Enter your username"
@@ -75,6 +93,7 @@ const Signup = () => {
               type="email"
               id="email"
               name="email"
+              required
               value={userData.email}
               onChange={changeInputHandler}
               placeholder="Enter your email"
@@ -92,6 +111,7 @@ const Signup = () => {
               type="password"
               id="password"
               name="password"
+              required
               value={userData.password}
               onChange={changeInputHandler}
               className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-emerald-500"
@@ -109,6 +129,7 @@ const Signup = () => {
               type="password"
               id="confirmPassword"
               name="confirmPassword"
+              required
               value={userData.confirmPassword}
               onChange={changeInputHandler}
               className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:border-emerald-500"
@@ -129,6 +150,12 @@ const Signup = () => {
           </Link>
         </p>
       </div>
+      <Toaster
+        toastOptions={{
+          className: "shadow-xl bg-white text-black rounded-full px-6 py-2",
+        }}
+        position="bottom-center"
+      />
     </div>
   );
 };

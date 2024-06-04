@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { UserContext } from "../context/userContext";
 import { motion } from "framer-motion";
+import toast, { Toaster } from "react-hot-toast";
 
 const ManageAccount = () => {
   let navigate = useNavigate();
@@ -37,22 +38,36 @@ const ManageAccount = () => {
   };
 
   const handleApply = async () => {
-    const response = await axios.patch(
-      `${import.meta.env.VITE_BACKEND_URL}/user/manage`,
-      modifiedUserData,
-      {
-        withCredentials: true,
-        headers: { Authorization: `Bearer ${currentUser.token}` },
+    try {
+      const response = await axios.patch(
+        `${import.meta.env.VITE_BACKEND_URL}/user/manage`,
+        modifiedUserData,
+        {
+          withCredentials: true,
+          headers: { Authorization: `Bearer ${currentUser.token}` },
+        }
+      );
+
+      console.log(response);
+
+      if (response.status === 200) {
+        navigate("/logout");
       }
-    );
+    } catch (error) {
+      console.log(error);
+      console.log(error.response.data.message);
+      console.log(error.response.status);
 
-    console.log(response.data);
+      toast.error(error.response.data.message, {
+        style: {
+          borderRadius: "10px",
+          background: "#363636",
+          color: "#fff",
+        },
+      });
 
-    if (response.status === 200) {
-      navigate("/logout");
+
     }
-
-    // navigate("/");
   };
 
   return (
@@ -229,6 +244,12 @@ const ManageAccount = () => {
             )}
           </div>
         </motion.div>
+        <Toaster
+        toastOptions={{
+          className: "shadow-xl bg-white text-black rounded-full px-6 py-2",
+        }}
+        position="bottom-center"
+      />
       </motion.div>
     </>
   );

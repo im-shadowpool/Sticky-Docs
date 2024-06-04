@@ -53,7 +53,7 @@ const NotesLoader = () => {
   // console.log(sortData);
 
   const finalData =
-    currentUser.defaultSettings.sortOption === "newest" ? reverseData : data;
+    currentUser?.defaultSettings.sortOption === "newest" ? reverseData : data;
 
   const container = {
     hidden: { opacity: 1, scale: 0 },

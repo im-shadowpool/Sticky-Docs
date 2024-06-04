@@ -2,9 +2,12 @@ import axios from "axios";
 import { useContext, useState } from "react";
 import { UserContext } from "../context/userContext";
 import { Link, useNavigate } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
 
 const Login = () => {
   const { setCurrentUser } = useContext(UserContext);
+
+  const [errorMsg, setErrorMsg] = useState(null);
 
   const navigate = useNavigate();
 
@@ -37,6 +40,21 @@ const Login = () => {
       navigate("/");
     } catch (error) {
       console.log(error);
+      console.log(error);
+      console.log(error.response.data.message);
+      console.log(error.response.status);
+
+      setErrorMsg(error.response.data.message);
+
+      toast.error(error.response.data.message, {
+        style: {
+          borderRadius: "10px",
+          background: "#363636",
+          color: "#fff",
+        },
+      });
+
+      console.log(errorMsg);
     }
   };
 
@@ -95,6 +113,12 @@ const Login = () => {
           </Link>
         </p>
       </div>
+      <Toaster
+        toastOptions={{
+          className: "shadow-xl bg-white text-black rounded-full px-6 py-2",
+        }}
+        position="bottom-center"
+      />
     </div>
   );
 };

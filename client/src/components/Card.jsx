@@ -31,11 +31,11 @@ const Card = ({ card, refe }) => {
     toast.success("Copied to clipboard!", {
       className:
         card.tag.colorId === "green"
-          ? `bg-emerald-700 text-white rounded-full shadow-2xl px-5 py-2 font-[500]`
+          ? `bg-emerald-600 text-white rounded-full shadow-2xl px-5 py-2 font-[500]`
           : card.tag.colorId === "blue"
-          ? `bg-cyan-700 text-white rounded-full shadow-2xl px-5 py-2 font-[500]`
+          ? `bg-cyan-600 text-white rounded-full shadow-2xl px-5 py-2 font-[500]`
           : card.tag.colorId === "yellow"
-          ? `bg-yellow-700 text-white rounded-full shadow-2xl px-5 py-2 font-[500]`
+          ? `bg-yellow-600 text-white rounded-full shadow-2xl px-5 py-2 font-[500]`
           : `bg-slate-600 text-white rounded-full shadow-2xl px-5 py-2 font-[500]`,
     });
   };
@@ -65,7 +65,7 @@ const Card = ({ card, refe }) => {
     );
 
     console.log(response);
-    if (e.target.parentNode.parentNode) {
+    if (e.target.parentNode.parentNode && response.status === 200) {
       e.target.parentNode.parentNode.remove();
       toast.success("Note deleted successfully!", {
         style: {
