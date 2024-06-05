@@ -9,29 +9,27 @@ const cors = require("cors");
 const app = express();
 dotenv.config();
 
-const allowedOrigins = ['http://localhost:5173', 'https://sticky-docs-server.vercel.app'];
+const allowedOrigins = ["http://localhost:5173", "https://docs.devshadow.live"];
 // Middleware
 
 app.use(express.json({ extended: true }));
 app.use(express.urlencoded({ extended: true }));
 
-app.use(cors({
-  origin: function(origin, callback){
-    // allow requests with no origin 
-    // (like mobile apps or curl requests)
-    if(!origin) return callback(null, true);
-    if(allowedOrigins.indexOf(origin) === -1){
-      var msg = 'The CORS policy for this site does not ' +
-                'allow access from the specified Origin.';
-      return callback(new Error(msg), false);
-    }
-    return callback(null, true);
-  },
-  credentials: true
-}));
-
-
-// app.use(cors({ credentials: true, origin: ["http://localhost:5173", "https://docs.devshadow.live"]}));
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.indexOf(origin) === -1) {
+        var msg =
+          "The CORS policy for this site does not " +
+          "allow access from the specified Origin.";
+        return callback(new Error(msg), false);
+      }
+      return callback(null, true);
+    },
+    credentials: true,
+  })
+);
 
 // Routes
 app.use("/api/user", userRoutes);
@@ -40,8 +38,8 @@ app.use("/api/settings", settingsRoutes);
 app.get("/api", (req, res) => {
   res.send("Welcome to Docs Server");
 });
-app.all('*', (req, res) => {
-  res.status(404).send('Page not found');
+app.all("*", (req, res) => {
+  res.status(404).send("Page not found");
 });
 
 mongoose

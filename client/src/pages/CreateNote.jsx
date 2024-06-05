@@ -100,12 +100,11 @@ const CreateNote = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        transition={{ duration: 0.1, ease: "easeInOut", delay: 0.1}}
-    
+        transition={{ duration: 0.1, ease: "easeInOut", delay: 0.1 }}
         onClick={onClickOutsidePopup}
         className="fixed clickedOutside flex justify-center items-center top-0 left-0 z-[4] w-full h-full bg-gray-900 bg-opacity-50"
       >
-        <div className="bg-white p-6  flex flex-col justify-start rounded-lg">
+        <div className="bg-white w-full sm:max-w-fit  p-6 flex flex-col justify-start rounded-lg">
           <div className="flex justify-between items-center">
             <h1 className="text-3xl font-semibold">Create a new note</h1>
             <span
@@ -128,7 +127,7 @@ const CreateNote = () => {
               required
             />
             {/* Creating the Color Picker and 4 colour choices */}
-            <div className="flex gap-3">
+            <div className="flex flex-col gap-3">
               <label className="text-lg font-semibold">Choose a color :</label>
               <input
                 type="radio"
