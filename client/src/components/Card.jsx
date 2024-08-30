@@ -53,8 +53,6 @@ const Card = ({ card, refe }) => {
     // localData = localData.filter((item) => item.id !== card.id);
     // localStorage.setItem("data", JSON.stringify(localData));
 
-    console.log(card._id);
-
     const response = await axios.delete(
       `${import.meta.env.VITE_BACKEND_URL}/notes/delete/${card._id}`,
       {
@@ -64,7 +62,6 @@ const Card = ({ card, refe }) => {
       }
     );
 
-    console.log(response);
     if (e.target.parentNode.parentNode && response.status === 200) {
       e.target.parentNode.parentNode.remove();
       toast.success("Note deleted successfully!", {
@@ -154,6 +151,11 @@ const Card = ({ card, refe }) => {
   };
 
   // --------------------------------------------------- return statement ---------------------------------------------------
+
+  console.log(card.tag.color);
+  console.log(card.tag.opacity);
+  console.log(card.tag.opacityValue);
+
   return (
     <motion.div
       key={card.id}
@@ -178,7 +180,7 @@ const Card = ({ card, refe }) => {
         dragElastic={0.1}
         dragTransition={{ power: 0.1 }}
         dragPropagation={true}
-        className={`relative w-60 h-72 rounded-[20px] px-3.5  ${card.tag.tagColor} overflow-hidden shadow-lg`}
+        className={`relative w-60 h-72 rounded-[20px] px-3.5  ${card.tag.color} bg-opacity-${card.tag.opacityValue} overflow-hidden shadow-lg`}
       >
         {/* {console.log(card.tag.tagColor)} */}
         <TfiLayoutLineSolid
@@ -221,7 +223,7 @@ const Card = ({ card, refe }) => {
             {/* after clicking above icon, it should turns to another cancel icon */}
             <MdDeleteOutline
               onClick={deleteNoteHandler}
-              className={`${card.tag.color}/30 w-6 h-6 rounded-full text-lg p-[4px] flex justify-center items-center cursor-pointer hover:${card.tag.color}/90 transition-all`}
+              className={`${card.tag.color} bg-opacity-20 w-6 h-6 rounded-full text-lg p-[4px] flex justify-center items-center cursor-pointer hover:bg-opacity-40 transition-all`}
             />
             <MdOutlineCancel
               onClick={cancelDeletionHandler}
@@ -229,7 +231,7 @@ const Card = ({ card, refe }) => {
             />
 
             <MdCopyAll
-              className={`${card.tag.color}/30 w-6 h-6 rounded-full text-lg p-[4px] flex justify-center items-center cursor-pointer hover:opacity-80 transition-all`}
+              className={`${card.tag.color} bg-opacity-20 w-6 h-6 rounded-full text-lg p-[4px] flex justify-center items-center cursor-pointer hover:bg-opacity-40 transition-all`}
               onClick={clickToCopyHandler}
             />
           </div>

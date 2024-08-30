@@ -34,7 +34,7 @@ const MainApp = () => {
     }
   }, []);
 
-  console.log("App.js");
+
 
   return (
     <div className="relative w-full h-screen">

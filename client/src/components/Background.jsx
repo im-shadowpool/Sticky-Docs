@@ -38,7 +38,6 @@ const Background = () => {
   const getGreeting = () => {
     const currentTime = new Date();
     const currentHour = currentTime.getHours();
-    console.log(currentHour);
     let greeting;
 
     if (currentHour < 12) {
@@ -57,8 +56,6 @@ const Background = () => {
 
   let message =
     greetingsMessage + ", " + currentUser?.username + "! " + getGreeting();
-
-  console.log(message);
 
   return (
     <>

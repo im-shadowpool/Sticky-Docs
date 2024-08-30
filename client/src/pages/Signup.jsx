@@ -59,7 +59,7 @@ const Signup = () => {
 
   return (
     <div className="flex flex-col justify-center items-center h-screen bg-emerald-500">
-      <h2 className="text-2xl bg-white min-w-96 p-2 pl-8  shadow-lg rounded font-bold mb-1">
+      <h2 className="text-2xl bg-white min-w-96 p-2 pl-8 text-center shadow-lg rounded font-bold mb-1">
         Signup
       </h2>
       <div className="bg-white p-8 rounded shadow-lg min-w-96">

@@ -6,7 +6,7 @@ import { UserContext } from "../context/userContext";
 import { motion } from "framer-motion";
 
 const NotesLoader = () => {
-  console.log("NotesLoader");
+
   const ref = useRef(null);
   const navigate = useNavigate();
 
@@ -33,10 +33,10 @@ const NotesLoader = () => {
             },
           }
         );
-        console.log(response);
+ 
 
         setData(response.data);
-        console.log("NotesLoader 1");
+
       } catch (error) {
         console.error(error);
       }
@@ -45,12 +45,9 @@ const NotesLoader = () => {
     fetchData();
   }, [navigate]);
 
-  console.log("NotesLoader 2");
+
 
   const reverseData = [...data].reverse();
-
-  console.log(data);
-  // console.log(sortData);
 
   const finalData =
     currentUser?.defaultSettings.sortOption === "newest" ? reverseData : data;

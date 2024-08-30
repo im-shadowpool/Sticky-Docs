@@ -59,7 +59,7 @@ const MainMenu = () => {
             variants={menuVariants}
             className="fixed top-14 right-3 z-50 bg-emerald-500 text-white shadow-lg rounded-lg p-3"
           >
-            <div className="flex items-center">
+            <div className="flex items-center justify-start mb-3">
               <span className="px-3 text-lg">Hey! 👋</span>
               <h1 className="text-lg font-bold">{currentUser.username}</h1>
             </div>
@@ -68,27 +68,27 @@ const MainMenu = () => {
                 onClick={() => {
                   navigate("/manage-account");
                 }}
-                className="flex items-center p-2 hover:bg-emerald-400 rounded-lg"
+                className="flex items-center py-2 px-3 hover:bg-emerald-400/60 rounded-lg"
               >
-                <span className="px-3">🔏</span>
+                <span className="px-2">👤</span>
                 <span>Manage account</span>
               </button>
               <button
-                className="flex items-center p-2 hover:bg-emerald-400 rounded-lg"
+                className="flex items-center py-2 px-3 hover:bg-emerald-400/60 rounded-lg"
                 onClick={() => {
                   navigate("/ui-settings");
                 }}
               >
-                <span className="px-3">🎨</span>
+                <span className="px-2">🎨</span>
                 <span>UI Settings</span>
               </button>
               <button
-                className="flex items-center p-2 hover:bg-emerald-400 rounded-lg"
+                className="flex items-center py-2 px-3 hover:bg-emerald-400/60 rounded-lg"
                 onClick={() => {
                   navigate("/logout");
                 }}
               >
-                <span className="px-3">🔐</span>
+                <span className="px-2">🔐</span>
                 <span>Logout</span>
               </button>
             </div>

@@ -16,7 +16,7 @@ const HomePage = () => {
     }
   }, []);
   // Auth done
-  console.log("HomePage");
+
   return (
     <>
       <CreateNoteBtn />

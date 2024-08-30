@@ -1,16 +1,19 @@
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { UserContext } from "../context/userContext";
-import NotesLoader from "../components/NotesLoader";
 import { motion } from "framer-motion";
+import classNames from "classnames";
+import { MdOutlineCancel } from "react-icons/md";
+
+const colors = ["blue", "green", "slate", "yellow"];
 
 const CreateNote = () => {
   let navigate = useNavigate();
 
   const [selectedColor, setSelectedColor] = useState("");
-  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [selectOpacity, setSelectOpacity] = useState(null);
 
   //Authenticating the user
   const { currentUser } = useContext(UserContext);
@@ -36,15 +39,14 @@ const CreateNote = () => {
     //   return;
     // }
 
-    const selectedColor = document.querySelector(
-      'input[name="color"]:checked'
-    ).value;
     const selectedOpacity = document.querySelector(
       'input[name="opacity"]:checked'
     ).value;
     const selectedColorId = document.querySelector(
       'input[name="color"]:checked'
     ).id;
+    // converting to string
+    let selectedOpacityValue = selectedOpacity.toString();
 
     // console.log(
     //   e.target[0].value,
@@ -57,12 +59,15 @@ const CreateNote = () => {
       title: e.target[0].value,
       description: e.target[1].value,
       tag: {
-        tagColor: selectedColor + `/${selectedOpacity}`,
-        color: selectedColor,
-        opacity: selectedOpacity,
-        colorId: selectedColorId,
+        tagColor: selectedColor + `/${selectedOpacity}`, //bg-blue-500/40
+        color: selectedColor, //bg-blue-500
+        opacity: "bg-opacity-" + selectedOpacity, //bg-opacity-40
+        opacityValue: selectedOpacityValue, //40
+        colorId: selectedColorId, //blue
       },
     };
+
+    console.log(newData);
 
     // let localData = JSON.parse(localStorage.getItem("data"));
     // if (localData) {
@@ -81,10 +86,6 @@ const CreateNote = () => {
         },
       }
     );
-
-    console.log(response);
-    setFormSubmitted(!formSubmitted);
-    console.log(formSubmitted);
 
     toast.success("Note created successfully", {
       duration: 3000,
@@ -109,11 +110,12 @@ const CreateNote = () => {
             <h1 className="text-3xl font-semibold">Create a new note</h1>
             <span
               onClick={() => navigate("/")}
-              className="py-2 px-4 bg-slate-100 font-bold hover:bg-green-100 text-base rounded-full cursor-pointer"
+              className="py-2 px-2 bg-slate-100 font-bold hover:bg-green-100 text-base rounded-full cursor-pointer"
             >
-              X
+              <MdOutlineCancel className="text-2xl text-gray-700 cursor-pointer" />
             </span>
           </div>
+
           <form className="flex flex-col gap-5 mt-5" onSubmit={handleSubmit}>
             <input
               type="text"
@@ -127,130 +129,66 @@ const CreateNote = () => {
               required
             />
             {/* Creating the Color Picker and 4 colour choices */}
-            <div className="flex flex-col gap-3">
-              <label className="text-lg font-semibold">Choose a color :</label>
-              <input
-                type="radio"
-                id="blue"
-                name="color"
-                value="bg-blue-500"
-                className="hidden"
-              />
-              <label
-                htmlFor="blue"
-                className="w-7 h-7 bg-blue-500 rounded-full cursor-pointer"
-                onClick={() => {
-                  setSelectedColor("bg-blue-500");
-                }}
-              ></label>
-              <input
-                type="radio"
-                id="green"
-                name="color"
-                value="bg-green-500"
-                className="hidden"
-              />
-              <label
-                htmlFor="green"
-                className="w-7 h-7 bg-green-500 rounded-full cursor-pointer"
-                onClick={() => {
-                  setSelectedColor("bg-green-500");
-                }}
-              ></label>
-              <input
-                type="radio"
-                id="gray"
-                name="color"
-                value="bg-slate-500"
-                className="hidden"
-              />
-              <label
-                htmlFor="gray"
-                className="w-7 h-7 bg-slate-500 rounded-full cursor-pointer"
-                onClick={() => {
-                  setSelectedColor("bg-slate-500");
-                }}
-              ></label>
-              <input
-                type="radio"
-                id="yellow"
-                name="color"
-                value="bg-yellow-500"
-                className="hidden"
-              />
-              <label
-                htmlFor="yellow"
-                className="w-7 h-7 bg-yellow-500 rounded-full cursor-pointer"
-                onClick={(e) => {
-                  setSelectedColor("bg-yellow-500");
-                  e.target.classList.add("border-2", "border-black");
-                }}
-              ></label>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <div className="flex flex-row gap-3 items-center justify-start">
+                <label className="text-xl text-gray-700 font-semibold">
+                  Choose a color :
+                </label>
+                {colors.map((color) => (
+                  <React.Fragment key={color}>
+                    <input
+                      type="radio"
+                      id={color}
+                      name="color"
+                      value={`bg-${color}-500`}
+                      className="hidden"
+                    />
+                    <label
+                      htmlFor={color}
+                      className={classNames(
+                        `w-8 h-8 rounded-full cursor-pointer`,
+                        `bg-${color}-500`,
+                        {
+                          "border-2 border-gray-600":
+                            selectedColor === `bg-${color}-500`,
+                        }
+                      )}
+                      onClick={() => {
+                        setSelectedColor(`bg-${color}-500`);
+                      }}
+                    ></label>
+                  </React.Fragment>
+                ))}
+              </div>
+
               {/* Selecting Opacity */}
-              <label className="text-lg font-semibold">Choose opacity :</label>
-              <input
-                type="radio"
-                id="30"
-                name="opacity"
-                value="30"
-                className="hidden"
-              />
-              <label
-                htmlFor="30"
-                className={
-                  selectedColor === "bg-blue-500"
-                    ? `w-7 h-7 bg-blue-500/30 rounded-full cursor-pointe`
-                    : selectedColor === "bg-green-500"
-                    ? `w-7 h-7 bg-green-500/30 rounded-full cursor-pointer`
-                    : selectedColor === "bg-slate-500"
-                    ? `w-7 h-7 bg-slate-500/30 rounded-full cursor-pointer`
-                    : selectedColor === "bg-yellow-500"
-                    ? `w-7 h-7 bg-yellow-500/30 rounded-full cursor-pointer`
-                    : `w-7 h-7 bg-slate-400/30 rounded-full cursor-pointer`
-                }
-              ></label>
-              <input
-                type="radio"
-                id="50"
-                name="opacity"
-                value="50"
-                className="hidden"
-              />
-              <label
-                htmlFor="50"
-                className={
-                  selectedColor === "bg-blue-500"
-                    ? `w-7 h-7 bg-blue-500/50 rounded-full cursor-pointer`
-                    : selectedColor === "bg-green-500"
-                    ? `w-7 h-7 bg-green-500/50 rounded-full cursor-pointer`
-                    : selectedColor === "bg-slate-500"
-                    ? `w-7 h-7 bg-slate-500/50 rounded-full cursor-pointer`
-                    : selectedColor === "bg-yellow-500"
-                    ? `w-7 h-7 bg-yellow-500/50 rounded-full cursor-pointer`
-                    : `w-7 h-7 bg-slate-400/50 rounded-full cursor-pointer`
-                }
-              ></label>
-              <input
-                type="radio"
-                id="65"
-                name="opacity"
-                value="65"
-                className="hidden"
-              />
-              <label
-                htmlFor="65"
-                className={
-                  selectedColor === "bg-blue-500"
-                    ? `w-7 h-7 bg-blue-500/65 rounded-full cursor-pointer`
-                    : selectedColor === "bg-green-500"
-                    ? `w-7 h-7 bg-green-500/65 rounded-full cursor-pointer`
-                    : selectedColor === "bg-slate-500"
-                    ? `w-7 h-7 bg-slate-500/65 rounded-full cursor-pointer`
-                    : selectedColor === "bg-yellow-500"
-                    ? `w-7 h-7 bg-yellow-500/65 rounded-full cursor-pointer`
-                    : `w-7 h-7 bg-slate-400/65 rounded-full cursor-pointer`
-                }
-              ></label>
+
+              <div className="flex flex-row gap-3 items-center justify-start">
+                <label className="text-xl text-gray-700 font-semibold">
+                  Choose opacity :
+                </label>
+                {[10, 25, 40, 50].map((op) => (
+                  <React.Fragment key={op}>
+                    <input
+                      type="radio"
+                      id={op}
+                      name="opacity"
+                      value={op}
+                      className="hidden"
+                      onClick={() => setSelectOpacity(op)}
+                    />
+                    <label
+                      htmlFor={op}
+                      className={classNames(
+                        `w-8 h-8 ${selectedColor} rounded-full cursor-pointer`,
+                        { "bg-slate-400": selectedColor === "" },
+                        { "border-2 border-gray-600": selectOpacity === op }
+                      )}
+                      style={{ opacity: op / 100 }}
+                    ></label>
+                  </React.Fragment>
+                ))}
+              </div>
             </div>
             <button
               type="submit"

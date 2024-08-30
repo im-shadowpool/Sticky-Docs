@@ -53,7 +53,7 @@ const UiSettings = () => {
         },
       }
     );
-    console.log(response.data);
+
     if (response.status === 200) {
       //Save Data to the local storage to USER.defaultSettings
       const user = JSON.parse(localStorage.getItem("user"));

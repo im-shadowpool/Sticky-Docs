@@ -65,8 +65,6 @@ const ManageAccount = () => {
           color: "#fff",
         },
       });
-
-
     }
   };
 
@@ -209,18 +207,18 @@ const ManageAccount = () => {
             )}
           </div>
           {/* Two Buttons of applychanges and cancel */}
-          <div className="flex mt-3 justify-end">
+          <div className="flex mt-3 justify-end items-end gap-3">
             {!change && (
               <>
                 <button
                   onClick={() => setChange(!change)}
-                  className="bg-emerald-400 hover:bg-opacity-85 mr-6 text-white p-2 px-4 rounded-lg"
+                  className="bg-emerald-400 hover:bg-opacity-85 text-white p-2 px-4 rounded-lg"
                 >
                   Change
                 </button>
                 <button
                   onClick={() => navigate("/")}
-                  className="bg-emerald-400 hover:bg-opacity-85 text-white p-2 px-4 mr-6 rounded-lg"
+                  className="bg-emerald-400 hover:bg-opacity-85 text-white p-2 px-4 rounded-lg"
                 >
                   Close
                 </button>
@@ -230,13 +228,13 @@ const ManageAccount = () => {
               <>
                 <button
                   onClick={handleApply}
-                  className="bg-emerald-400 hover:bg-opacity-85 mr-6 text-white p-2 px-4 rounded-lg"
+                  className="bg-emerald-400 hover:bg-opacity-85 text-white p-2 px-4 rounded-lg"
                 >
                   Apply Changes
                 </button>
                 <button
                   onClick={() => setChange(!change)}
-                  className="bg-emerald-400 hover:bg-opacity-85 text-white p-2 px-4 mr-6 rounded-lg"
+                  className="bg-emerald-400 hover:bg-opacity-85 text-white p-2 px-4 rounded-lg"
                 >
                   Cancel
                 </button>
@@ -245,11 +243,11 @@ const ManageAccount = () => {
           </div>
         </motion.div>
         <Toaster
-        toastOptions={{
-          className: "shadow-xl bg-white text-black rounded-full px-6 py-2",
-        }}
-        position="bottom-center"
-      />
+          toastOptions={{
+            className: "shadow-xl bg-white text-black rounded-full px-6 py-2",
+          }}
+          position="bottom-center"
+        />
       </motion.div>
     </>
   );
