@@ -9,7 +9,7 @@ const cors = require("cors");
 const app = express();
 dotenv.config();
 
-const allowedOrigins = ["http://localhost:5173", "https://docs.devshadow.live"];
+const allowedOrigins = ["http://localhost:5173", "https://docs.devshadow.live", "https://sticky-docs.vercel.app"];
 // Middleware
 
 app.use(express.json({ extended: true }));
